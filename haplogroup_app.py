@@ -7,7 +7,11 @@ import pandas as pd
 
 # Loads the AADR csv file into a pandas data frame
 def load_AADR_data():
-    AADR_df = pd.read_csv("AADR_Annotation(Sheet1).csv", sep=';', encoding='ISO-8859-1', usecols=[0,8,13,14,28])
+    #For the real deal
+    #AADR_df = pd.read_excel("AADR Annotations 2025.xlsx")
+    # for testing
+    AADR_df = pd.read_excel("test_AADR.xlsx", engine="openpyxl")
+    
     
     return AADR_df
 
@@ -22,26 +26,24 @@ def match_haplogroup(haplotype, haplogroup_list):
     
     
 AADR_df = load_AADR_data()
-
+print(AADR_df.head())
+print(AADR_df.columns)
 # Some rows does not have any mtDNA haplogroup information, these rows will 
 # just say "..". Here the rows without haplgroup information are removed.
-filtered_AADR_df = AADR_df[AADR_df["mtDNA haplogroup if >2x or published"] != ".."]
+#filtered_AADR_df = AADR_df[AADR_df["mtDNA haplogroup if >2x or published"] != ".."]
+# Also (or maybe change to removing n/a (<2x))
+#print(filtered_AADR_df.head())
 
 # Create list with only the haplotypes, from the AADR filtered dataframe
-haplogroup_list=filtered_AADR_df["mtDNA haplogroup if >2x or published"]
+#haplogroup_list=filtered_AADR_df["mtDNA haplogroup if >2x or published"]
 
 #st.title("Haplogroup")
 #haplogroup = st.text_input("Enter Haplogroup (e.g., R1b, H1): ")
-haplotype = input("Enter your haplotype (e.g., R1b, H1): ")
+#haplotype = input("Enter your haplotype (e.g., R1b, H1): ")
 
-match_function = match_haplogroup(haplotype, haplogroup_list)
-print(match_function)
+# Calls the function that matches users input with a haplogroup
+#matched_haplogroup = match_haplogroup(haplotype, haplogroup_list)
+#print(matched_haplogroup)
 
-aghaqjkghaladga
-gf
-asdfh
-adfh
-adh
-fah
-ad
-h
+#matching_row = filtered_AADR_df[filtered_AADR_df["mtDNA haplogroup if >2x or published"] == matched_haplogroup]
+#print(matching_row)
