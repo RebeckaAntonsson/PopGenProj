@@ -37,3 +37,11 @@ haplotype = input("Enter your haplotype (e.g., R1b, H1): ")
 match_function = match_haplogroup(haplotype, haplogroup_list)
 print(match_function)
 
+aghaqjkghaladga
+gf
+asdfh
+adfh
+adh
+fah
+ad
+h
