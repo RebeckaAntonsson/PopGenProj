@@ -25,6 +25,8 @@ def match_haplogroup(haplotype, haplogroup_list):
     
     
 AADR_df = load_AADR_data()
+# Rename one of the very long column names
+AADR_df = AADR_df.rename(columns={"Date mean in BP in years before 1950 CE [OxCal mu for a direct radiocarbon date, and average of range for a contextual date]": "Years before 1950", })
 
 # Some rows does not have any mtDNA haplogroup information, these rows will 
 # say "n/a". Here the rows without haplgroup information are removed.
@@ -32,9 +34,11 @@ AADR_df = load_AADR_data()
 # invert operatior for boolean. So the output is everything that does not
 # match the pattern ("n/a")
 filtered_AADR_df = AADR_df[~AADR_df["mtDNA haplogroup if >2x or published"].str.contains("n/a")]
+# Rename column since it no longer contains n/a values
+filtered_AADR_df = filtered_AADR_df.rename(columns={"mtDNA haplogroup if >2x or published" : "Haplogroup"})
 
 # Create list with only the haplotypes, from the AADR filtered dataframe
-haplogroup_list=filtered_AADR_df["mtDNA haplogroup if >2x or published"]
+haplogroup_list=filtered_AADR_df["Haplogroup"]
 
 # Ask user to input their hapotype and save it in the hapotype variable
 #st.title("Haplogroup")
@@ -47,5 +51,9 @@ matched_haplogroup = match_haplogroup(haplotype, haplogroup_list)
 print("Matched haplogroup", matched_haplogroup)
 
 # Get the rows that match to the haplogroup 
-matching_row = filtered_AADR_df[filtered_AADR_df["mtDNA haplogroup if >2x or published"] == matched_haplogroup]
-print(matching_row)
+matching_rows = filtered_AADR_df[filtered_AADR_df["Haplogroup"] == matched_haplogroup]
+
+oldest_match = matching_rows.nlargest(1,"Years before 1950")
+
+print(matching_rows)
+print(oldest_match)
