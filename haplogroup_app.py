@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-#import streamlit as st
+import streamlit as st
 import pandas as pd
 
 
@@ -41,19 +41,30 @@ filtered_AADR_df = filtered_AADR_df.rename(columns={"mtDNA haplogroup if >2x or 
 haplogroup_list=filtered_AADR_df["Haplogroup"]
 
 # Ask user to input their hapotype and save it in the hapotype variable
-#st.title("Haplogroup")
-#haplogroup = st.text_input("Enter Haplogroup (e.g., R1b, H1): ")
-haplotype = input("Enter your haplotype for example R1b, D4b1a2a. \nDO NOT enter entire files like no fasta, csv, json etc \nDO NOT enter only mutations for example H1a1 T16093C G16213A. \nPlease enter your haplotype here: ")
-print("Haplotype",haplotype)
+haplotype = st.text_input(""""Enter your haplotype for example R1b, D4b1a2a.")
+                  "\nDO NOT enter entire files like no fasta, csv, json etc",
+                  "\nDO NOT enter only mutations for example H1a1 T16093C G16213A.",
+                  "\nqPlease enter your haplotype here: """)
 
-# Calls the function that matches users input with a haplogroup
-matched_haplogroup = match_haplogroup(haplotype, haplogroup_list)
-print("Matched haplogroup", matched_haplogroup)
 
-# Get the rows that match to the haplogroup 
-matching_rows = filtered_AADR_df[filtered_AADR_df["Haplogroup"] == matched_haplogroup]
+if haplotype:
+    # Calls the function that matches users input with a haplogroup
+    matched_haplogroup = match_haplogroup(haplotype, haplogroup_list)
+    st.write(matched_haplogroup)
+    
+    # Get the rows that match to the haplogroup 
+    matching_rows = filtered_AADR_df[filtered_AADR_df["Haplogroup"] == matched_haplogroup]
+    
+    # If there is more than one haplogroup match, get the oldest one
+    oldest_match = matching_rows.nlargest(1,"Years before 1950")
+    # Plus 75 since the age is years before 1950, and its 2025 now
+    age_of_match = oldest_match["Years before 1950"].iloc[0]
+    age_of_match = int(age_of_match) + 75
+    
+    
+    # Write to the output using streamlit
+    st.write("Your haplotype is", haplotype)
+    st.write("You have matched with the haplogroup ", matched_haplogroup)
+    st.write("Your haplogroup is from ", age_of_match, 
+             " years ago, and originated from", oldest_match["Political Entity"].iloc[0])
 
-oldest_match = matching_rows.nlargest(1,"Years before 1950")
-
-print(matching_rows)
-print(oldest_match)
