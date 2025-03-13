@@ -87,23 +87,7 @@ def match_VIP(matched_haplogroup, VIP_haplogroups_list):
 
 
 
-<<<<<<< HEAD
-if haplotype:
-    # Calls the function that matches users input with a haplogroup
-    matched_haplogroup = match_haplogroup(haplotype, haplogroup_list)
-    
-    if not matched_haplogroup:
-        st.error("There was no haplogroup match to your haplotype, are you sure you entered it corretly?")
-        st.stop()
-        
-        
-    VIP_df = load_VIP_file()
-    VIP_haplogroups_list = VIP_df["mtDNA"]
-    matched_VIP_group = match_VIP(matched_haplogroup, VIP_haplogroups_list)
-    
-=======
 def output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype):
->>>>>>> fix_error_messages
     
     #Fixing the output to print
     
