@@ -68,8 +68,9 @@ if haplotype:
     VIP_df = load_VIP_file()
     VIP_haplogroups_list = VIP_df["mtDNA"]
     matched_VIP_group = match_VIP(matched_haplogroup, VIP_haplogroups_list)
-    print(matched_VIP_group)
     
+    
+    #Fixing the output to print
     
     # Get the rows that match to the haplogroup 
     matching_rows = filtered_AADR_df[filtered_AADR_df["Haplogroup"] == matched_haplogroup]
@@ -79,6 +80,12 @@ if haplotype:
     age_of_match = oldest_match["Years before 1950"].iloc[0]
     age_of_match = int(age_of_match) + 75
     
+    # VIP print
+    VIP = VIP_df[VIP_df["mtDNA"] == matched_VIP_group]
+    #Reset the index column to remove row numbers, to not display when printing
+    #VIP = VIP.reset_index(drop=True)
+    
+    
     
     # Write to the output using streamlit
     st.write("Your haplotype is", haplotype)
@@ -86,4 +93,4 @@ if haplotype:
     st.write("Your haplogroup is from ", age_of_match, 
              " years ago, and originated from", oldest_match["Political Entity"].iloc[0])
     st.write("Your haplogroup matches with the following VIP's")
-
+    st.dataframe(VIP, column_order =("mtDNA","Individual","Category"), hide_index=True)
