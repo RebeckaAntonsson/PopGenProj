@@ -92,5 +92,5 @@ if haplotype:
     st.write("You have matched with the haplogroup ", matched_haplogroup)
     st.write("Your haplogroup is from ", age_of_match, 
              " years ago, and originated from", oldest_match["Political Entity"].iloc[0])
-    st.write("Your haplogroup matches with the following VIP's")
+    st.write("Your haplogroup matches with the following VIP's:")
     st.dataframe(VIP, column_order =("mtDNA","Individual","Category"), hide_index=True)
