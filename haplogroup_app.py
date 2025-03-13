@@ -8,9 +8,9 @@ import pandas as pd
 # Loads the AADR csv file into a pandas data frame
 def load_AADR_data():
     #For the real deal
-    #AADR_df = pd.read_excel("AADR Annotations 2025.xlsx")
+    AADR_df = pd.read_excel("AADR_Annotations_2025.xlsx", engine="openpyxl", usecols=[0,8,13,14,28])
     # for testing
-    AADR_df = pd.read_excel("test_AADR.xlsx", engine="openpyxl", usecols=[0,8,13,14,28])
+    #AADR_df = pd.read_excel("test_AADR.xlsx", engine="openpyxl", usecols=[0,8,13,14,28])
     
     return AADR_df
 
@@ -27,13 +27,15 @@ def match_haplogroup(haplotype, haplogroup_list):
 AADR_df = load_AADR_data()
 # Rename one of the very long column names
 AADR_df = AADR_df.rename(columns={"Date mean in BP in years before 1950 CE [OxCal mu for a direct radiocarbon date, and average of range for a contextual date]": "Years before 1950", })
-
+print(AADR_df["mtDNA haplogroup if >2x or published"].head())
 # Some rows does not have any mtDNA haplogroup information, these rows will 
 # say "n/a". Here the rows without haplgroup information are removed.
 # The code says "if the column contains n/a", but the ~before AADR is an
 # invert operatior for boolean. So the output is everything that does not
 # match the pattern ("n/a")
-filtered_AADR_df = AADR_df[~AADR_df["mtDNA haplogroup if >2x or published"].str.contains("n/a")]
+
+filtered_AADR_df = AADR_df[~AADR_df["mtDNA haplogroup if >2x or published"].str.contains("n/a", na=False)]
+
 # Rename column since it no longer contains n/a values
 filtered_AADR_df = filtered_AADR_df.rename(columns={"mtDNA haplogroup if >2x or published" : "Haplogroup"})
 
@@ -41,10 +43,10 @@ filtered_AADR_df = filtered_AADR_df.rename(columns={"mtDNA haplogroup if >2x or 
 haplogroup_list=filtered_AADR_df["Haplogroup"]
 
 # Ask user to input their hapotype and save it in the hapotype variable
-haplotype = st.text_input(""""Enter your haplotype for example R1b, D4b1a2a.")
-                  "\nDO NOT enter entire files like no fasta, csv, json etc",
-                  "\nDO NOT enter only mutations for example H1a1 T16093C G16213A.",
-                  "\nqPlease enter your haplotype here: """)
+haplotype = st.text_input("""Enter your haplotype, for example like "D4b1a2a"
+                  \nDO NOT enter entire files like no fasta, csv, json etc
+                  \nDO NOT enter only mutations, for example H1a1 T16093C G16213A.
+                  \nPlease enter your haplotype here: """)
 
 
 if haplotype:
