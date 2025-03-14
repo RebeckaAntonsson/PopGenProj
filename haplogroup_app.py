@@ -37,7 +37,7 @@ import streamlit as st
 import pandas as pd
 
 
-# Loads the AADR csv file into a pandas data frame
+# Loads the AADR excel file into a pandas data frame
 def load_AADR_data():
     #For the real deal
     AADR_df = pd.read_excel("AADR_Annotations_2025.xlsx", engine="openpyxl", usecols=[0,8,13,14,28])
@@ -57,6 +57,9 @@ def load_AADR_data():
     
     return filtered_AADR_df
 
+
+
+# Loads the VIP excel file into a pandas data frame
 def load_VIP_file():
     VIP_df = pd.read_excel("VIPHaplogroups.xlsx")
     
