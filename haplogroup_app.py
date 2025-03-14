@@ -60,6 +60,7 @@ def load_AADR_data():
 def load_VIP_file():
     VIP_df = pd.read_excel("VIPHaplogroups.xlsx")
     
+    # Renaming the columns
     VIP_df = VIP_df.rename(columns={"mtDNA" : "Haplogroup"})
     VIP_df = VIP_df.rename(columns={"Individual" : "VIP"})
     VIP_df = VIP_df.rename(columns={"Category" : "Famous for"})
@@ -87,6 +88,7 @@ def match_VIP(matched_haplogroup, VIP_haplogroups_list):
 
 
 
+# Function that filters out the correct output and writes the output results
 def output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype):
     
     #Fixing the output to print
@@ -114,6 +116,7 @@ def output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype):
 
 def output_VIP(VIP_df, matched_VIP_group):
     
+    # Gets all rows from the VIP file that matches with the Haplogroup
     VIP = VIP_df[VIP_df["Haplogroup"] == matched_VIP_group]
     
     return VIP
