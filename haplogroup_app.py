@@ -92,6 +92,7 @@ def match_VIP(matched_haplogroup, VIP_haplogroups_list):
 
 
 # Function that filters out the correct output and writes the output results
+# For the AADR haplogroup output
 def output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype):
     
     #Fixing the output to print
@@ -116,7 +117,8 @@ def output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype):
     return output_text
 
 
-
+# Function that filters out the correct output and writes the output results,
+# For the VIP output
 def output_VIP(VIP_df, matched_VIP_group):
     
     # Gets all rows from the VIP file that matches with the Haplogroup
@@ -126,8 +128,10 @@ def output_VIP(VIP_df, matched_VIP_group):
 
 
 
+# MAIN script
+
 def main():
-    # Start program and print the first information
+    # Start program and print the first information, using streamlit
     
     st.header("Find your haplogroup")
      
@@ -164,7 +168,7 @@ def main():
         # Calls function that loads the VIP haplogroup excel file.
         VIP_df = load_VIP_file()
         
-        # Create list with only the haplotypes, from the VIP data frame
+        # Create list with only the haplotypes,from the VIP data frame
         VIP_haplogroups_list = VIP_df["Haplogroup"]
         
         # Calls the function that matches the matched haplogroup with a 
