@@ -133,7 +133,7 @@ def output_VIP(VIP_df, matched_VIP_group):
 def main():
     # Start program and print the first information, using streamlit
     
-    st.header("Find your haplogroup")
+    st.header("Find your mtDNA haplogroup")
      
     # Ask user to input their hapotype and save it in the hapotype variable
     haplotype = st.text_input("""Enter your haplotype, for example like "D4b1a2a" or "N1b2a""
