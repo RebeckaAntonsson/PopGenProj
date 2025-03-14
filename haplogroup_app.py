@@ -150,6 +150,11 @@ def main():
         # Calls the function that matches users input with a haplogroup
         matched_haplogroup = match_haplogroup(haplotype, haplogroup_list)
         
+        # Stops the script and writes error message if the users input does not have a matching haplogroup.
+        if not matched_haplogroup:
+            st.error("There was no haplogroup match to your haplotype, are you sure you entered it corretly?")
+            st.stop()
+        
         # Calls function that writes the results for haplogroup matching
         haplogroup_output = output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype)
         
