@@ -61,7 +61,7 @@ def load_AADR_data():
 
 # Loads the VIP excel file into a pandas data frame
 def load_VIP_file():
-    VIP_df = pd.read_excel("VIPHaplogroups.xlsx")
+    VIP_df = pd.read_excel("VIPHaplogroups.xlsx", sheet_name=0)
     
     # Renaming the columns
     VIP_df = VIP_df.rename(columns={"mtDNA" : "Haplogroup"})
