@@ -125,7 +125,7 @@ def output_VIP(VIP_df, matched_VIP_group):
     VIP = VIP_df[VIP_df["Haplogroup"] == matched_VIP_group]
     
     return VIP
-
+    
 
 
 # MAIN script
@@ -181,9 +181,12 @@ def main():
         # Write the results, using streamlit
         st.header("Results")
         st.write(haplogroup_output)
-        st.write("Your haplogroup matches with the following VIP's:")
-        st.dataframe(VIP, column_order =("Haplogroup","VIP","Category"), hide_index=True)
-
+        if not VIP.empty:
+            st.write("Your haplogroup matches with the following VIP's:")
+            st.dataframe(VIP, column_order =("Haplogroup","VIP","Category"), hide_index=True)
+        else:
+            st.write("""Oh, It looks like your haplogroup dosen't match to any famous people :( 
+                Maybe you will be the first one?""")
 
 if __name__ == "__main__":
     main()
