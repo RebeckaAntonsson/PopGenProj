@@ -40,10 +40,12 @@ import pandas as pd
 # Loads the AADR excel file into a pandas data frame
 def load_AADR_data():
     #For the real deal
-    AADR_df = pd.read_excel("AADR_Annotations_2025.xlsx", engine="openpyxl", usecols=[0,8,13,14,28])
+    AADR_df = pd.read_excel("AADR_Annotations_2025.xlsx", engine="openpyxl", usecols=[8,13,14,15,16,28])
     
-    # Rename one of the very long column names
-    AADR_df = AADR_df.rename(columns={"Date mean in BP in years before 1950 CE [OxCal mu for a direct radiocarbon date, and average of range for a contextual date]": "Years before 1950", })
+    # Rename one of the very long column names plus latidude and longitude
+    # so the map function can understand the columns
+    AADR_df = AADR_df.rename(columns={"Date mean in BP in years before 1950 CE [OxCal mu for a direct radiocarbon date, and average of range for a contextual date]": "Years before 1950", 
+                                      "Lat." : "lat", "Long." : "lon"})
 
     # Some rows does not have any mtDNA haplogroup information, these rows will 
     # say "n/a". Here the rows without haplgroup information are removed.
@@ -64,10 +66,9 @@ def load_VIP_file():
     VIP_df = pd.read_excel("VIPHaplogroups.xlsx", sheet_name=0)
     
     # Renaming the columns
-    VIP_df = VIP_df.rename(columns={"mtDNA" : "Haplogroup"})
-    VIP_df = VIP_df.rename(columns={"Individual" : "VIP"})
-    VIP_df = VIP_df.rename(columns={"Category" : "Famous for"})
-    
+    VIP_df = VIP_df.rename(columns={"mtDNA" : "Haplogroup", 
+                           "Individual" : "VIP", 
+                           "Category" : "Famous for"})
     return VIP_df
 
 
@@ -93,7 +94,7 @@ def match_VIP(matched_haplogroup, VIP_haplogroups_list):
 
 # Function that filters out the correct output and writes the output results
 # For the AADR haplogroup output
-def output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype):
+def output_haplogroup(filtered_AADR_df, matched_haplogroup):
     
     #Fixing the output to print
     
@@ -107,14 +108,8 @@ def output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype):
     age_of_match = oldest_match["Years before 1950"].iloc[0]
     age_of_match = int(age_of_match) + 75
     
-    output_text = (
-        f"Your haplotype is: {haplotype}\n\n"
-        f"You have matched with the haplogroup: {matched_haplogroup}\n\n"
-        f"\nYour haplogroup is from  {age_of_match} years ago "
-        f"and originated from {oldest_match["Political Entity"].iloc[0]}"
-        )
-    
-    return output_text
+     
+    return oldest_match, age_of_match
 
 
 # Function that filters out the correct output and writes the output results,
@@ -132,7 +127,7 @@ def output_VIP(VIP_df, matched_VIP_group):
 
 def main():
     # Start program and print the first information, using streamlit
-    
+
     st.header("Find your mtDNA haplogroup")
      
     # Ask user to input their hapotype and save it in the hapotype variable
@@ -160,7 +155,7 @@ def main():
             st.stop()
         
         # Calls function that writes the results for haplogroup matching
-        haplogroup_output = output_haplogroup(filtered_AADR_df, matched_haplogroup, haplotype)
+        oldest_match, age_of_match = output_haplogroup(filtered_AADR_df, matched_haplogroup)
         
         
         # Find VIP's that share the haplogroup
@@ -180,20 +175,34 @@ def main():
         
         # Write the results, using streamlit
         st.header("Your results")
-        col1, col2 = st.columns(2)
+        tab1, tab2 = st.tabs(["Haplogroup","VIP"])
         
-        with col1:
+        with tab1:
             st.subheader("Haplogroup")
-            st.write(haplogroup_output)
+            st.markdown(f"""
+            Your haplotype is: {haplotype}\n\n
+            You have matched with the haplogroup:
+                <span style="background-color:#3c799c; padding:5px; 
+                border-radius:5px;"><b>{matched_haplogroup}</b></span>
+            """, unsafe_allow_html=True)
+            st.write(
+            f"\nYour haplogroup is from  {age_of_match} years ago "
+            f"and originated from {oldest_match["Political Entity"].iloc[0]}"
+            )
             
-        with col2:
+
+            # World map showing the coordiates of where the match was found
+            st.map(oldest_match, zoom=2, size=100000, color="#1e4e69")
+            
+        with tab2:
             st.subheader("VIP")
             if VIP.empty:
                 st.write("""Oh, It looks like your haplogroup dosen't match to any famous people (in our data base) :/ 
                     \nMaybe you will be the first one? :)""")
             else:
                 st.write("Your haplogroup matches with the following VIP's:")
-                st.dataframe(VIP, column_order =("Haplogroup","VIP","Category"), hide_index=True)
+                st.dataframe(VIP, column_order =("Haplogroup","VIP","Famous for"), 
+                             hide_index=True)
             
                 
 
