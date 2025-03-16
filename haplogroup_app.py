@@ -131,10 +131,11 @@ def main():
     st.header("Find your mtDNA haplogroup")
      
     # Ask user to input their hapotype and save it in the hapotype variable
-    haplotype = st.text_input("""Enter your haplotype, for example like "D4b1a2a" or "N1b2a""
-                      \nDO NOT enter entire files like no fasta, csv, json etc
-                      \nDO NOT enter only mutations, for example H1a1 T16093C G16213A.
-                      \nPlease enter your haplotype here: """)
+    haplotype = st.text_input("Please enter your haplotype here:")
+    st.info("""\nDO NOT enter entire files like no fasta, csv, json etc
+    \nDO NOT enter only mutations, for example H1a1 T16093C G16213A.
+    \nDO NOT enter your yDNA haplogroup, only mtDNA
+    \nEnter your haplotype, for example like "D4b1a2a or "N1b2a" """, icon="ℹ️")
     
     if haplotype:
         
@@ -181,13 +182,14 @@ def main():
             st.subheader("Haplogroup")
             st.markdown(f"""
             Your haplotype is: {haplotype}\n\n
-            You have matched with the haplogroup:
+            This haplotype belongs to the haplogroup:
                 <span style="background-color:#3c799c; padding:5px; 
                 border-radius:5px;"><b>{matched_haplogroup}</b></span>
             """, unsafe_allow_html=True)
             st.write(
-            f"\nYour haplogroup is from  {age_of_match} years ago "
-            f"and originated from {oldest_match["Political Entity"].iloc[0]}"
+            f"\nThe {matched_haplogroup} haplogroup originates from  {age_of_match} years ago "
+            f"in {oldest_match["Political Entity"].iloc[0]},"
+            f" see the map below for a more exact location."
             )
             
 
