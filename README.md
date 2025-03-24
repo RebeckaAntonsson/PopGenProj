@@ -51,6 +51,9 @@ conda export > complete_list_softwear_versions
 AADR_Annotations_2025.xlsx\
 VIPHaplogroups.xlsx
 
+#### Download theme from this Github page:
+Download the .streamlit folder, containing a file named config.toml
+
 #### Run the app
 
 The haplotype_app.py script will open a webpage where the user can input their haplotype.
